@@ -1,6 +1,7 @@
 import asyncio
 from posixpath import dirname
 from pathlib import Path
+import sys
 import ccxt.async_support as ccxt
 import pytz
 import pandas as pd
@@ -29,7 +30,7 @@ class CexData:
         # "KuCoin": 1500
     }
 
-    def __init__(self, cex) -> None:
+    def __init__(self, cex, path_download="./") -> None:
         """
         La fonction prend une chaîne, et si la chaîne est 'binance' ou 'ftx', elle crée un objet ccxt
         pour cet échange.
@@ -42,13 +43,14 @@ class CexData:
         :param cex: L'échange que vous souhaitez utiliser
         """
         self.cex_class = cex
+        self.path_download = path_download
         if self.cex_class.lower() == 'binance':
             self.cex = ccxt.binance(config={'enableRateLimit': True})
         elif self.cex_class.lower() == 'ftx':
             self.cex = ccxt.ftx(config={'enableRateLimit': True})
 
         self.path_data = str(
-            Path(os.path.join(dirname(__file__), '../database', self.cex_class)).resolve())
+            Path(os.path.join(dirname(__file__), self.path_download, self.cex_class)).resolve())
         os.makedirs(self.path_data, exist_ok=True)
         self.pbar = None
 
@@ -134,7 +136,7 @@ class CexData:
                     print("\tTéléchargement des données")
 
                     tasks = []
-                    current_timestamp = dt_or_false.timestamp() * 1000
+                    current_timestamp = int(dt_or_false.timestamp() * 1000)
 
                     while True:
                         tasks.append(asyncio.create_task(self.download_tf(
