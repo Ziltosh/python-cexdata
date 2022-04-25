@@ -129,6 +129,8 @@ class CexData:
                 file_path = f"{self.path_data}/{interval}/"
                 os.makedirs(file_path, exist_ok=True)
                 file_name = f"{file_path}{coin.replace('/', '-')}.csv"
+                if self.cex_class.lower() == "binance":
+                    file_name = file_name.replace('USDT', 'USD')
 
                 dt_or_false = await self.is_data_missing(file_name, last_dt)
                 if dt_or_false:
