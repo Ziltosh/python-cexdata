@@ -8,9 +8,13 @@ Voir le fichier cexdata.ipynb
 ```python
 from cexdata import CexData
 
+cex = CexData("binance")
+
+await cex.download_data(coins=["BTC-USD", "ETH-USD"], intervals=["1d", "1h"], end_date="2022-01-01 00:00:00")
+
 cex = CexData("ftx")
 
-await cex.download_data(coins=["BTC-USD", "ETH-USD"], intervals=["1d", "1h"], end_date="2022-01-01T00:00:00")
+await cex.download_data(coins=["BTC-USD", "ETH-USD"], intervals=["1d", "1h"], end_date="2022-01-01 00:00:00")
 ```
 
 # Améliorations possibles
