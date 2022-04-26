@@ -94,6 +94,7 @@ class CexData:
         # if not start_date:
         start_date = datetime.fromisoformat(
             '2017-01-01 00:00:00')
+
         # else:
         #     start_date = datetime.fromisoformat(
         #         start_date)
@@ -101,8 +102,9 @@ class CexData:
         if not end_date:
             end_date = datetime.now(tz=pytz.utc)
         else:
-            end_date = datetime.fromisoformat(
-                end_date)
+            # Si la date passée est dans le futur on la mets a la date courante
+            # Ca évite de toujours retélécharger des données qui n'existent pas encore
+            end_date = min(datetime.fromisoformat(end_date), datetime.now())
 
         start_timestamp = int(start_date.timestamp() * 1000)
 
@@ -133,6 +135,8 @@ class CexData:
                     file_name = file_name.replace('USDT', 'USD')
 
                 dt_or_false = await self.is_data_missing(file_name, last_dt)
+                # print(dt_or_false)
+
                 if dt_or_false:
 
                     print("\tTéléchargement des données")
@@ -211,15 +215,8 @@ class CexData:
         un intervalle et une plage de temps donnés
 
         :param file_name: Le nom du fichier pour vérifier les données manquantes
-        :param coin: la pièce que vous voulez vérifier
-        :param interval: l'intervalle des données, par ex. 1m, 5m, 1h, 1j
-        :param start_timestamp: L'horodatage de début des données que vous souhaitez vérifier
-        :param end_timestamp: L'horodatage du dernier point de données que vous souhaitez vérifier
+        :last_dt: La date de fin de la plage de données voulue
         """
-        # On check la première data dispo sur le CEX
-
-        await self.cex.close()
-
         if os.path.isfile(file_name):
             df = pd.read_csv(file_name, index_col=0, parse_dates=True)
             df.index = pd.to_datetime(df.index, unit='ms')
