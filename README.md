@@ -4,9 +4,9 @@ Permet de récupérer sous forme de CSV l'historique des cours sur FTX et Binanc
 Si des données partielles existent déjà, il ne récupère que ce qui manque (utile sur les timeframes les plus petits).
 
 # Update
-CryptoRobot a repris un peu le code et à apporter des améliorations que vous pouvez retrouver dans la classe ExchangeDataManager du fichier exchange_data_manager.py
+[CryptoRobot](https://github.com/CryptoRobotFr/ "CryptoRobotFR") a repris le code et à apporter des améliorations que vous pouvez retrouver dans la classe ExchangeDataManager du fichier exchange_data_manager.py
 
-Avec aussi la possibilité d'explorer les données.
+Avec aussi la possibilité d'explorer les données, un grand merci à lui.
 
 ## Utilisation
 
