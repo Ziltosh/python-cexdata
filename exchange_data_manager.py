@@ -242,7 +242,8 @@ class ExchangeDataManager:
                 return r
             except Exception:
                 tests += 1
-                if tests == 3:
+                await asyncio.sleep(1)
+                if tests == 5:
                     raise TooManyError
 
     async def is_data_missing(self, file_name, last_dt):
